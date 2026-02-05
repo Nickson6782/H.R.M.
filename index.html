@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HRMaster - Role-Based HR Management System</title>
+    <title>HRMaster - Complete HR Management System</title>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Newsreader:wght@600;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -40,8 +40,8 @@
             line-height: 1.6;
         }
 
-        /* Login Screen */
-        .login-container {
+        /* Registration/Login Screen */
+        .auth-container {
             min-height: 100vh;
             display: flex;
             align-items: center;
@@ -50,21 +50,21 @@
             padding: 2rem;
         }
 
-        .login-card {
+        .auth-card {
             background: var(--bg-card);
             border-radius: 20px;
             padding: 3rem;
-            max-width: 450px;
+            max-width: 500px;
             width: 100%;
             box-shadow: var(--shadow-xl);
         }
 
-        .login-header {
+        .auth-header {
             text-align: center;
             margin-bottom: 2rem;
         }
 
-        .login-logo {
+        .auth-logo {
             font-family: 'Newsreader', serif;
             font-size: 2.5rem;
             font-weight: 700;
@@ -75,9 +75,32 @@
             margin-bottom: 0.5rem;
         }
 
-        .login-subtitle {
+        .auth-subtitle {
             color: var(--text-secondary);
             font-size: 0.95rem;
+        }
+
+        .auth-tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .auth-tab {
+            flex: 1;
+            padding: 0.75rem;
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            cursor: pointer;
+            text-align: center;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        .auth-tab.active {
+            background: var(--accent);
+            color: white;
+            border-color: var(--accent);
         }
 
         .role-selector {
@@ -218,12 +241,6 @@
             font-weight: 600;
         }
 
-        .nav-icon {
-            width: 20px;
-            height: 20px;
-            flex-shrink: 0;
-        }
-
         .logout-btn {
             margin: 2rem 2rem 0 2rem;
             padding: 0.875rem 1rem;
@@ -271,11 +288,6 @@
             max-width: 500px;
         }
 
-        .search-box {
-            position: relative;
-            width: 100%;
-        }
-
         .search-box input {
             width: 100%;
             padding: 0.75rem 1rem 0.75rem 3rem;
@@ -287,73 +299,10 @@
             background: var(--bg-main);
         }
 
-        .search-box input:focus {
-            outline: none;
-            border-color: var(--accent);
-            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
-        }
-
-        .search-icon {
-            position: absolute;
-            left: 1rem;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--text-secondary);
-        }
-
         .top-bar-actions {
             display: flex;
             gap: 1rem;
             align-items: center;
-        }
-
-        .icon-btn {
-            width: 40px;
-            height: 40px;
-            border-radius: 10px;
-            border: 1px solid var(--border);
-            background: var(--bg-card);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.2s;
-            position: relative;
-        }
-
-        .icon-btn:hover {
-            background: var(--bg-main);
-            border-color: var(--accent);
-        }
-
-        .notification-badge {
-            position: absolute;
-            top: -4px;
-            right: -4px;
-            width: 18px;
-            height: 18px;
-            background: var(--danger);
-            border-radius: 50%;
-            font-size: 0.7rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: 600;
-        }
-
-        .user-profile {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            padding: 0.5rem 1rem;
-            border-radius: 12px;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .user-profile:hover {
-            background: var(--bg-main);
         }
 
         .user-avatar {
@@ -366,11 +315,6 @@
             justify-content: center;
             color: white;
             font-weight: 700;
-        }
-
-        .user-info {
-            display: flex;
-            flex-direction: column;
         }
 
         .user-name {
@@ -434,9 +378,14 @@
             border: 1px solid var(--border);
         }
 
-        .btn-secondary:hover {
-            border-color: var(--accent);
-            background: var(--bg-main);
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+        }
+
+        .btn-success {
+            background: var(--accent);
+            color: white;
         }
 
         /* Cards */
@@ -448,10 +397,6 @@
             border: 1px solid var(--border);
             transition: all 0.3s;
             margin-bottom: 1.5rem;
-        }
-
-        .card:hover {
-            box-shadow: var(--shadow-md);
         }
 
         .card-header {
@@ -484,22 +429,7 @@
             position: relative;
             overflow: hidden;
             transition: all 0.3s;
-        }
-
-        .stat-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 3px;
-            background: var(--accent);
-            transform: scaleX(0);
-            transition: transform 0.3s;
-        }
-
-        .stat-card:hover::before {
-            transform: scaleX(1);
+            cursor: pointer;
         }
 
         .stat-card:hover {
@@ -551,11 +481,6 @@
             color: var(--accent);
         }
 
-        .stat-change.negative {
-            background: rgba(239, 68, 68, 0.1);
-            color: var(--danger);
-        }
-
         .badge {
             display: inline-flex;
             align-items: center;
@@ -569,15 +494,7 @@
         .badge.success { background: rgba(16, 185, 129, 0.15); color: var(--accent); }
         .badge.warning { background: rgba(245, 158, 11, 0.15); color: var(--secondary); }
         .badge.danger { background: rgba(239, 68, 68, 0.15); color: var(--danger); }
-        .badge.info { background: rgba(59, 130, 246, 0.15); color: var(--info); }
-
-        .badge::before {
-            content: '';
-            width: 6px;
-            height: 6px;
-            border-radius: 50%;
-            background: currentColor;
-        }
+        .badge.pending { background: rgba(59, 130, 246, 0.15); color: var(--info); }
 
         .form-group {
             margin-bottom: 1.5rem;
@@ -590,9 +507,7 @@
             font-size: 0.9rem;
         }
 
-        .form-input,
-        .form-select,
-        .form-textarea {
+        .form-input, .form-select, .form-textarea {
             width: 100%;
             padding: 0.875rem 1rem;
             border: 1px solid var(--border);
@@ -603,9 +518,7 @@
             background: var(--bg-main);
         }
 
-        .form-input:focus,
-        .form-select:focus,
-        .form-textarea:focus {
+        .form-input:focus, .form-select:focus, .form-textarea:focus {
             outline: none;
             border-color: var(--accent);
             box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
@@ -624,6 +537,7 @@
             border-radius: 12px;
             margin-bottom: 0.75rem;
             transition: all 0.2s;
+            cursor: pointer;
         }
 
         .employee-list-item:hover {
@@ -643,7 +557,117 @@
             flex-shrink: 0;
         }
 
-        /* Responsive */
+        /* Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            backdrop-filter: blur(4px);
+        }
+
+        .modal {
+            background: var(--bg-card);
+            border-radius: 20px;
+            padding: 2rem;
+            max-width: 600px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: var(--shadow-xl);
+        }
+
+        .modal-header {
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-title {
+            font-family: 'Newsreader', serif;
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+            margin-top: 2rem;
+        }
+
+        .calendar-container {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .calendar-day {
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .calendar-day:hover {
+            background: var(--accent);
+            color: white;
+        }
+
+        .calendar-day.selected {
+            background: var(--accent);
+            color: white;
+        }
+
+        .calendar-day.disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        /* Check-in/out buttons */
+        .attendance-actions {
+            display: flex;
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .attendance-btn {
+            flex: 1;
+            padding: 2rem;
+            border-radius: 16px;
+            border: 2px solid var(--border);
+            background: var(--bg-card);
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+        }
+
+        .attendance-btn:hover {
+            border-color: var(--accent);
+            transform: translateY(-2px);
+        }
+
+        .attendance-btn.checked-in {
+            border-color: var(--accent);
+            background: rgba(16, 185, 129, 0.1);
+        }
+
+        .link-input-group {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
         @media (max-width: 1024px) {
             .app {
                 grid-template-columns: 1fr;
@@ -652,92 +676,113 @@
             .sidebar {
                 display: none;
             }
-
-            .content-area {
-                padding: 1.5rem;
-            }
-
-            .top-bar {
-                padding: 1rem;
-            }
-
-            .search-container {
-                max-width: 200px;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .stats-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .login-card {
-                padding: 2rem;
-            }
-
-            .page-title {
-                font-size: 1.5rem;
-            }
         }
     </style>
 </head>
 <body>
-    <!-- Login Screen -->
-    <div id="loginScreen" class="login-container">
-        <div class="login-card">
-            <div class="login-header">
-                <div class="login-logo">HRMaster</div>
-                <p class="login-subtitle">Role-Based HR Management System</p>
+    <!-- Registration/Login Screen -->
+    <div id="authScreen" class="auth-container">
+        <div class="auth-card">
+            <div class="auth-header">
+                <div class="auth-logo">HRMaster</div>
+                <p class="auth-subtitle">Complete HR Management System</p>
             </div>
 
-            <div class="role-selector">
-                <div class="role-option" onclick="selectRole('hr-manager')">
-                    <div class="role-icon">👔</div>
-                    <div class="role-title">HR Manager</div>
-                    <div class="role-desc">Full admin access</div>
-                </div>
-                <div class="role-option" onclick="selectRole('employee')">
-                    <div class="role-icon">👤</div>
-                    <div class="role-title">Employee</div>
-                    <div class="role-desc">Self-service portal</div>
-                </div>
+            <div class="auth-tabs">
+                <div class="auth-tab active" onclick="switchAuthTab('login')">Login</div>
+                <div class="auth-tab" onclick="switchAuthTab('register')">Register</div>
             </div>
 
-            <form onsubmit="login(event)">
-                <div class="form-group">
-                    <label class="form-label">Email</label>
-                    <input type="email" class="form-input" placeholder="email@company.com" required>
+            <!-- Login Form -->
+            <div id="loginForm">
+                <div class="role-selector">
+                    <div class="role-option" onclick="selectRole('employer')">
+                        <div class="role-icon">👔</div>
+                        <div class="role-title">Employer/HR</div>
+                        <div class="role-desc">Full admin access</div>
+                    </div>
+                    <div class="role-option" onclick="selectRole('employee')">
+                        <div class="role-icon">👤</div>
+                        <div class="role-title">Employee</div>
+                        <div class="role-desc">Self-service portal</div>
+                    </div>
                 </div>
 
-                <div class="form-group">
-                    <label class="form-label">Password</label>
-                    <input type="password" class="form-input" placeholder="Enter password" required>
+                <form onsubmit="login(event)">
+                    <div class="form-group">
+                        <label class="form-label">Email</label>
+                        <input type="email" id="loginEmail" class="form-input" placeholder="email@company.com" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Password</label>
+                        <input type="password" id="loginPassword" class="form-input" placeholder="Enter password" required>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center;">
+                        Login
+                    </button>
+                </form>
+            </div>
+
+            <!-- Register Form -->
+            <div id="registerForm" class="hidden">
+                <div class="role-selector">
+                    <div class="role-option" onclick="selectRole('employer')">
+                        <div class="role-icon">👔</div>
+                        <div class="role-title">Employer/HR</div>
+                        <div class="role-desc">Register as employer</div>
+                    </div>
+                    <div class="role-option" onclick="selectRole('employee')">
+                        <div class="role-icon">👤</div>
+                        <div class="role-title">Employee</div>
+                        <div class="role-desc">Register as employee</div>
+                    </div>
                 </div>
 
-                <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center;">
-                    Login
-                </button>
-            </form>
+                <form onsubmit="register(event)">
+                    <div class="form-group">
+                        <label class="form-label">Full Name</label>
+                        <input type="text" id="registerName" class="form-input" placeholder="John Doe" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Email</label>
+                        <input type="email" id="registerEmail" class="form-input" placeholder="email@company.com" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Password</label>
+                        <input type="password" id="registerPassword" class="form-input" placeholder="Create password" required>
+                    </div>
+
+                    <div class="form-group" id="employeeCodeGroup" class="hidden">
+                        <label class="form-label">Employee ID</label>
+                        <input type="text" id="registerEmployeeId" class="form-input" placeholder="Your employee ID">
+                    </div>
+
+                    <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center;">
+                        Register
+                    </button>
+                </form>
+            </div>
         </div>
     </div>
 
     <!-- Main Application -->
     <div id="mainApp" class="app hidden">
-        <!-- Sidebar -->
-        <aside class="sidebar" id="sidebar">
+        <aside class="sidebar">
             <div class="logo">
                 <h1>HRMaster</h1>
                 <p>Complete HR Solution</p>
             </div>
 
-            <div class="user-role-badge" id="roleBadge">
-                <div class="role">HR Manager</div>
-                <div class="name">Sarah Johnson</div>
+            <div class="user-role-badge">
+                <div class="role" id="sidebarRole">Employer</div>
+                <div class="name" id="sidebarName">Admin</div>
             </div>
 
-            <nav id="mainNav">
-                <!-- Navigation will be inserted here based on role -->
-            </nav>
+            <nav id="mainNav"></nav>
 
             <button class="logout-btn" onclick="logout()">
                 <span>🚪</span>
@@ -745,63 +790,132 @@
             </button>
         </aside>
 
-        <!-- Main Content -->
         <main class="main-content">
-            <!-- Top Bar -->
             <div class="top-bar">
                 <div class="search-container">
-                    <div class="search-box">
-                        <span class="search-icon">🔍</span>
-                        <input type="text" placeholder="Search employees, records...">
-                    </div>
+                    <input type="text" placeholder="Search..." class="form-input">
                 </div>
                 <div class="top-bar-actions">
-                    <div class="icon-btn">
-                        <span>🔔</span>
-                        <span class="notification-badge">3</span>
-                    </div>
-                    <div class="user-profile">
-                        <div class="user-avatar" id="userAvatar">SJ</div>
-                        <div class="user-info">
-                            <div class="user-name" id="userName">Sarah Johnson</div>
-                            <div class="user-role" id="userRoleDisplay">HR Manager</div>
-                        </div>
+                    <div class="user-avatar" id="topbarAvatar">A</div>
+                    <div>
+                        <div class="user-name" id="topbarName">Admin</div>
+                        <div class="user-role" id="topbarRole">Employer</div>
                     </div>
                 </div>
             </div>
 
-            <!-- Content Area -->
-            <div class="content-area" id="contentArea">
-                <!-- Content will be loaded here -->
-            </div>
+            <div class="content-area" id="contentArea"></div>
         </main>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
-        // Global state
-        let currentUser = {
-            role: null,
-            name: '',
-            avatar: ''
+        // Data Storage
+        const DB = {
+            users: JSON.parse(localStorage.getItem('hrmaster_users') || '[]'),
+            employees: JSON.parse(localStorage.getItem('hrmaster_employees') || '[]'),
+            attendance: JSON.parse(localStorage.getItem('hrmaster_attendance') || '[]'),
+            leaveRequests: JSON.parse(localStorage.getItem('hrmaster_leave') || '[]'),
+            profileRequests: JSON.parse(localStorage.getItem('hrmaster_profile_requests') || '[]'),
+            performanceReviews: JSON.parse(localStorage.getItem('hrmaster_reviews') || '[]'),
+            jobLinks: JSON.parse(localStorage.getItem('hrmaster_job_links') || '[]'),
+            
+            save(key) {
+                localStorage.setItem(`hrmaster_${key}`, JSON.stringify(this[key]));
+            }
         };
 
-        let employees = [
-            { id: 1, name: 'Emma Wilson', position: 'Senior UI/UX Designer', department: 'Design', email: 'emma.w@company.com', status: 'active' },
-            { id: 2, name: 'Michael Chen', position: 'Senior Backend Developer', department: 'Engineering', email: 'm.chen@company.com', status: 'active' },
-            { id: 3, name: 'Sarah Davis', position: 'Product Manager', department: 'Product', email: 's.davis@company.com', status: 'active' },
-            { id: 4, name: 'James Rodriguez', position: 'Marketing Manager', department: 'Marketing', email: 'j.rodriguez@company.com', status: 'on-leave' }
-        ];
+        // Initialize with demo data if empty
+        if (DB.employees.length === 0) {
+            DB.employees = [
+                { id: 1, name: 'Emma Wilson', email: 'emma@company.com', position: 'UI/UX Designer', department: 'Design', status: 'active', joinDate: '2024-01-15', phone: '+1234567890' },
+                { id: 2, name: 'Michael Chen', email: 'michael@company.com', position: 'Backend Developer', department: 'Engineering', status: 'active', joinDate: '2024-02-01', phone: '+1234567891' },
+                { id: 3, name: 'Sarah Davis', email: 'sarah@company.com', position: 'Product Manager', department: 'Product', status: 'active', joinDate: '2024-01-20', phone: '+1234567892' },
+                { id: 4, name: 'James Rodriguez', email: 'james@company.com', position: 'Marketing Manager', department: 'Marketing', status: 'on-leave', joinDate: '2024-03-01', phone: '+1234567893' }
+            ];
+            DB.save('employees');
+        }
 
+        let currentUser = null;
         let selectedRole = null;
+        let currentView = 'dashboard';
+        let selectedEmployee = null;
 
-        // Role selection
+        // Auth Functions
+        function switchAuthTab(tab) {
+            document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            if (tab === 'login') {
+                document.getElementById('loginForm').classList.remove('hidden');
+                document.getElementById('registerForm').classList.add('hidden');
+            } else {
+                document.getElementById('loginForm').classList.add('hidden');
+                document.getElementById('registerForm').classList.remove('hidden');
+            }
+        }
+
         function selectRole(role) {
             selectedRole = role;
             document.querySelectorAll('.role-option').forEach(opt => opt.classList.remove('selected'));
             event.target.closest('.role-option').classList.add('selected');
+            
+            // Show/hide employee ID field for employee registration
+            if (document.getElementById('registerForm').classList.contains('hidden') === false) {
+                const employeeCodeGroup = document.getElementById('employeeCodeGroup');
+                if (role === 'employee') {
+                    employeeCodeGroup.classList.remove('hidden');
+                } else {
+                    employeeCodeGroup.classList.add('hidden');
+                }
+            }
         }
 
-        // Login function
+        function register(event) {
+            event.preventDefault();
+            
+            if (!selectedRole) {
+                alert('Please select a role');
+                return;
+            }
+
+            const name = document.getElementById('registerName').value;
+            const email = document.getElementById('registerEmail').value;
+            const password = document.getElementById('registerPassword').value;
+            const employeeId = document.getElementById('registerEmployeeId').value;
+
+            // Check if email already exists
+            if (DB.users.find(u => u.email === email)) {
+                alert('Email already registered');
+                return;
+            }
+
+            // For employee registration, verify employee ID
+            if (selectedRole === 'employee') {
+                const employeeExists = DB.employees.find(e => e.id == employeeId && e.email === email);
+                if (!employeeExists) {
+                    alert('Invalid Employee ID or email mismatch');
+                    return;
+                }
+            }
+
+            const newUser = {
+                id: Date.now(),
+                name,
+                email,
+                password, // In production, hash this!
+                role: selectedRole,
+                employeeId: selectedRole === 'employee' ? employeeId : null
+            };
+
+            DB.users.push(newUser);
+            DB.save('users');
+
+            alert('Registration successful! Please login.');
+            switchAuthTab('login');
+            event.target.reset();
+        }
+
         function login(event) {
             event.preventDefault();
             
@@ -810,176 +924,127 @@
                 return;
             }
 
-            // Set user based on role
-            if (selectedRole === 'hr-manager') {
-                currentUser = {
-                    role: 'hr-manager',
-                    name: 'Sarah Johnson',
-                    avatar: 'SJ'
-                };
-            } else {
-                currentUser = {
-                    role: 'employee',
-                    name: 'Emma Wilson',
-                    avatar: 'EW'
-                };
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+
+            const user = DB.users.find(u => u.email === email && u.password === password && u.role === selectedRole);
+
+            if (!user) {
+                alert('Invalid credentials or wrong role selected');
+                return;
             }
 
-            // Hide login, show app
-            document.getElementById('loginScreen').classList.add('hidden');
+            currentUser = user;
+            
+            document.getElementById('authScreen').classList.add('hidden');
             document.getElementById('mainApp').classList.remove('hidden');
 
-            // Initialize UI based on role
-            initializeUI();
+            initializeApp();
         }
 
-        // Logout function
         function logout() {
-            currentUser = { role: null, name: '', avatar: '' };
-            document.getElementById('mainApp').classList.add('hidden');
-            document.getElementById('loginScreen').classList.remove('hidden');
+            currentUser = null;
             selectedRole = null;
+            document.getElementById('mainApp').classList.add('hidden');
+            document.getElementById('authScreen').classList.remove('hidden');
             document.querySelectorAll('.role-option').forEach(opt => opt.classList.remove('selected'));
         }
 
-        // Initialize UI based on user role
-        function initializeUI() {
-            // Update user info in UI
-            document.getElementById('userName').textContent = currentUser.name;
-            document.getElementById('userAvatar').textContent = currentUser.avatar;
-            document.getElementById('userRoleDisplay').textContent = currentUser.role === 'hr-manager' ? 'HR Manager' : 'Employee';
-            
-            // Update role badge
-            document.querySelector('.user-role-badge .role').textContent = currentUser.role === 'hr-manager' ? 'HR Manager' : 'Employee';
-            document.querySelector('.user-role-badge .name').textContent = currentUser.name;
+        function initializeApp() {
+            // Update user info
+            const avatar = currentUser.name.split(' ').map(n => n[0]).join('');
+            document.getElementById('sidebarName').textContent = currentUser.name;
+            document.getElementById('sidebarRole').textContent = currentUser.role === 'employer' ? 'Employer/HR' : 'Employee';
+            document.getElementById('topbarName').textContent = currentUser.name;
+            document.getElementById('topbarRole').textContent = currentUser.role === 'employer' ? 'Employer/HR' : 'Employee';
+            document.getElementById('topbarAvatar').textContent = avatar;
 
-            // Load navigation based on role
             loadNavigation();
-
-            // Load dashboard
             loadDashboard();
         }
 
-        // Load navigation based on role
         function loadNavigation() {
             const nav = document.getElementById('mainNav');
             
-            if (currentUser.role === 'hr-manager') {
-                // HR Manager - Full Access
+            if (currentUser.role === 'employer') {
                 nav.innerHTML = `
                     <div class="nav-section">
                         <div class="nav-title">Main</div>
-                        <div class="nav-item active" onclick="loadDashboard()">
-                            <span>🏠</span>
-                            <span>Dashboard</span>
-                        </div>
-                        <div class="nav-item" onclick="loadEmployees()">
-                            <span>👥</span>
-                            <span>Employees</span>
-                        </div>
-                        <div class="nav-item" onclick="loadAttendance()">
-                            <span>🕐</span>
-                            <span>Attendance</span>
-                        </div>
-                        <div class="nav-item" onclick="loadLeave()">
-                            <span>📅</span>
-                            <span>Leave Management</span>
-                        </div>
-                    </div>
-
-                    <div class="nav-section">
-                        <div class="nav-title">Administration</div>
-                        <div class="nav-item" onclick="loadPayroll()">
-                            <span>💰</span>
-                            <span>Payroll</span>
-                        </div>
-                        <div class="nav-item" onclick="loadRecruitment()">
-                            <span>💼</span>
-                            <span>Recruitment</span>
-                        </div>
-                        <div class="nav-item" onclick="loadReports()">
-                            <span>📊</span>
-                            <span>Reports</span>
-                        </div>
+                        <div class="nav-item active" onclick="loadDashboard()"><span>🏠</span> Dashboard</div>
+                        <div class="nav-item" onclick="loadEmployees()"><span>👥</span> Employees</div>
+                        <div class="nav-item" onclick="loadAttendance()"><span>🕐</span> Attendance</div>
+                        <div class="nav-item" onclick="loadLeaveManagement()"><span>📅</span> Leave Management</div>
+                        <div class="nav-item" onclick="loadRecruitment()"><span>💼</span> Recruitment</div>
+                        <div class="nav-item" onclick="loadPerformanceReviews()"><span>📊</span> Performance Reviews</div>
+                        <div class="nav-item" onclick="loadProfileRequests()"><span>✏️</span> Profile Requests</div>
                     </div>
                 `;
             } else {
-                // Employee - Restricted Access
                 nav.innerHTML = `
                     <div class="nav-section">
                         <div class="nav-title">My Portal</div>
-                        <div class="nav-item active" onclick="loadDashboard()">
-                            <span>🏠</span>
-                            <span>My Dashboard</span>
-                        </div>
-                        <div class="nav-item" onclick="loadMyProfile()">
-                            <span>👤</span>
-                            <span>My Profile</span>
-                        </div>
-                        <div class="nav-item" onclick="loadMyAttendance()">
-                            <span>🕐</span>
-                            <span>My Attendance</span>
-                        </div>
-                        <div class="nav-item" onclick="loadMyLeave()">
-                            <span>📅</span>
-                            <span>My Leave</span>
-                        </div>
-                        <div class="nav-item" onclick="loadMyPayslips()">
-                            <span>📄</span>
-                            <span>My Payslips</span>
-                        </div>
+                        <div class="nav-item active" onclick="loadDashboard()"><span>🏠</span> My Dashboard</div>
+                        <div class="nav-item" onclick="loadMyProfile()"><span>👤</span> My Profile</div>
+                        <div class="nav-item" onclick="loadMyAttendance()"><span>🕐</span> My Attendance</div>
+                        <div class="nav-item" onclick="loadMyLeave()"><span>📅</span> My Leave</div>
+                        <div class="nav-item" onclick="loadMyReviews()"><span>📊</span> My Reviews</div>
                     </div>
                 `;
             }
         }
 
-        // Update active nav item
-        function updateActiveNav(clickedElement) {
+        function updateActiveNav() {
             document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
-            if (clickedElement) {
-                clickedElement.classList.add('active');
+            if (event && event.target) {
+                event.target.closest('.nav-item')?.classList.add('active');
             }
         }
 
-        // Dashboard - HR Manager Version
+        // Dashboard Functions
         function loadDashboard() {
-            updateActiveNav(event?.target?.closest('.nav-item'));
+            updateActiveNav();
             const contentArea = document.getElementById('contentArea');
+            
+            if (currentUser.role === 'employer') {
+                const activeEmployees = DB.employees.filter(e => e.status === 'active').length;
+                const todayAttendance = DB.attendance.filter(a => a.date === new Date().toISOString().split('T')[0]).length;
+                const attendanceRate = ((todayAttendance / activeEmployees) * 100).toFixed(1);
+                const pendingLeave = DB.leaveRequests.filter(l => l.status === 'pending').length;
+                const openPositions = DB.jobLinks.length;
 
-            if (currentUser.role === 'hr-manager') {
                 contentArea.innerHTML = `
                     <div class="page-header">
                         <h1 class="page-title">Dashboard Overview</h1>
-                        <p class="page-subtitle">Welcome back! Here's your HR summary for today</p>
+                        <p class="page-subtitle">Welcome back! Here's your HR summary</p>
                     </div>
 
                     <div class="stats-grid">
-                        <div class="stat-card">
+                        <div class="stat-card" onclick="loadEmployees()">
                             <div class="stat-icon green">👥</div>
-                            <div class="stat-value">${employees.length}</div>
+                            <div class="stat-value">${activeEmployees}</div>
                             <div class="stat-label">Total Employees</div>
-                            <span class="stat-change positive">↑ 8.2% from last month</span>
+                            <span class="stat-change positive">Click to view</span>
                         </div>
 
-                        <div class="stat-card">
+                        <div class="stat-card" onclick="loadAttendance()">
                             <div class="stat-icon blue">✓</div>
-                            <div class="stat-value">96.4%</div>
+                            <div class="stat-value">${attendanceRate}%</div>
                             <div class="stat-label">Attendance Rate</div>
-                            <span class="stat-change positive">↑ 3.1% from last week</span>
+                            <span class="stat-change positive">Today: ${todayAttendance}/${activeEmployees}</span>
                         </div>
 
-                        <div class="stat-card">
+                        <div class="stat-card" onclick="loadLeaveManagement()">
                             <div class="stat-icon orange">📋</div>
-                            <div class="stat-value">5</div>
+                            <div class="stat-value">${pendingLeave}</div>
                             <div class="stat-label">Pending Leave Requests</div>
-                            <span class="stat-change">Requires action</span>
+                            <span class="stat-change">Click to manage</span>
                         </div>
 
-                        <div class="stat-card">
+                        <div class="stat-card" onclick="loadRecruitment()">
                             <div class="stat-icon red">💼</div>
-                            <div class="stat-value">8</div>
+                            <div class="stat-value">${openPositions}</div>
                             <div class="stat-label">Open Positions</div>
-                            <span class="stat-change positive">↑ 2 new this week</span>
+                            <span class="stat-change positive">Click to view</span>
                         </div>
                     </div>
 
@@ -987,34 +1052,16 @@
                         <div class="card-header">
                             <h2 class="card-title">Recent Activities</h2>
                         </div>
-                        <div>
-                            <div class="employee-list-item">
-                                <div class="employee-avatar-small">EW</div>
-                                <div style="flex: 1;">
-                                    <div style="font-weight: 600;">New employee onboarded</div>
-                                    <div style="font-size: 0.9rem; color: var(--text-secondary);">Emma Wilson joined the Design team</div>
-                                </div>
-                                <div style="text-align: right;">
-                                    <div style="font-size: 0.85rem; color: var(--text-secondary);">2 hours ago</div>
-                                    <span class="badge success">Completed</span>
-                                </div>
-                            </div>
-                            <div class="employee-list-item">
-                                <div class="employee-avatar-small">MC</div>
-                                <div style="flex: 1;">
-                                    <div style="font-weight: 600;">Leave request submitted</div>
-                                    <div style="font-size: 0.9rem; color: var(--text-secondary);">Michael Chen requested 5 days vacation</div>
-                                </div>
-                                <div style="text-align: right;">
-                                    <div style="font-size: 0.85rem; color: var(--text-secondary);">4 hours ago</div>
-                                    <span class="badge warning">Pending</span>
-                                </div>
-                            </div>
-                        </div>
+                        ${getRecentActivities()}
                     </div>
                 `;
             } else {
                 // Employee Dashboard
+                const employee = DB.employees.find(e => e.id == currentUser.employeeId);
+                const myAttendance = DB.attendance.filter(a => a.employeeId == currentUser.employeeId);
+                const myLeaveBalance = calculateLeaveBalance(currentUser.employeeId);
+                const todayCheckin = myAttendance.find(a => a.date === new Date().toISOString().split('T')[0]);
+
                 contentArea.innerHTML = `
                     <div class="page-header">
                         <h1 class="page-title">My Dashboard</h1>
@@ -1024,44 +1071,100 @@
                     <div class="stats-grid">
                         <div class="stat-card">
                             <div class="stat-icon green">✓</div>
-                            <div class="stat-value">98.5%</div>
-                            <div class="stat-label">My Attendance Rate</div>
-                            <span class="stat-change positive">Excellent performance</span>
+                            <div class="stat-value">${todayCheckin ? 'Checked In' : 'Not Yet'}</div>
+                            <div class="stat-label">Today's Status</div>
+                            <span class="stat-change positive">${todayCheckin ? todayCheckin.checkIn : 'Check in now'}</span>
                         </div>
 
-                        <div class="stat-card">
+                        <div class="stat-card" onclick="loadMyLeave()">
                             <div class="stat-icon blue">🌴</div>
-                            <div class="stat-value">12</div>
-                            <div class="stat-label">Leave Days Available</div>
-                            <span class="stat-change positive">Out of 15 annual days</span>
+                            <div class="stat-value">${myLeaveBalance.annual}</div>
+                            <div class="stat-label">Annual Leave Days</div>
+                            <span class="stat-change positive">Click to request</span>
                         </div>
 
                         <div class="stat-card">
-                            <div class="stat-icon orange">📅</div>
-                            <div class="stat-value">0</div>
-                            <div class="stat-label">Pending Requests</div>
-                            <span class="stat-change positive">All clear</span>
+                            <div class="stat-icon orange">🏥</div>
+                            <div class="stat-value">${myLeaveBalance.sick}</div>
+                            <div class="stat-label">Sick Leave Days</div>
                         </div>
 
-                        <div class="stat-card">
+                        <div class="stat-card" onclick="loadMyReviews()">
                             <div class="stat-icon red">📊</div>
-                            <div class="stat-value">March</div>
-                            <div class="stat-label">Next Performance Review</div>
+                            <div class="stat-value">View</div>
+                            <div class="stat-label">Performance Reviews</div>
+                            <span class="stat-change positive">Click to see</span>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">Quick Actions</h2>
+                        </div>
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+                            <button class="btn btn-primary" onclick="loadMyAttendance()">
+                                <span>🕐</span> Check In/Out
+                            </button>
+                            <button class="btn btn-secondary" onclick="loadMyLeave()">
+                                <span>📅</span> Request Leave
+                            </button>
+                            <button class="btn btn-secondary" onclick="loadMyProfile()">
+                                <span>👤</span> Update Profile
+                            </button>
                         </div>
                     </div>
                 `;
             }
         }
 
-        // Load Employees (Admin Only)
-        function loadEmployees() {
-            if (currentUser.role !== 'hr-manager') return;
+        function getRecentActivities() {
+            const activities = [];
             
-            updateActiveNav(event?.target?.closest('.nav-item'));
-            const contentArea = document.getElementById('contentArea');
+            // Recent leave requests
+            const recentLeave = DB.leaveRequests.slice(-5).reverse();
+            recentLeave.forEach(leave => {
+                const emp = DB.employees.find(e => e.id == leave.employeeId);
+                activities.push(`
+                    <div class="employee-list-item">
+                        <div class="employee-avatar-small">${emp ? emp.name.split(' ').map(n => n[0]).join('') : '?'}</div>
+                        <div style="flex: 1;">
+                            <div style="font-weight: 600;">Leave Request</div>
+                            <div style="font-size: 0.9rem; color: var(--text-secondary);">${emp ? emp.name : 'Unknown'} requested ${leave.type} leave</div>
+                        </div>
+                        <span class="badge ${leave.status === 'approved' ? 'success' : leave.status === 'rejected' ? 'danger' : 'pending'}">${leave.status}</span>
+                    </div>
+                `);
+            });
 
-            let employeeRows = employees.map(emp => `
-                <div class="employee-list-item">
+            return activities.join('') || '<p style="text-align: center; color: var(--text-secondary); padding: 2rem;">No recent activities</p>';
+        }
+
+        function calculateLeaveBalance(employeeId) {
+            const approvedLeave = DB.leaveRequests.filter(l => l.employeeId == employeeId && l.status === 'approved');
+            
+            let annual = 15;
+            let sick = 10;
+            let personal = 5;
+
+            approvedLeave.forEach(leave => {
+                const days = Math.ceil((new Date(leave.endDate) - new Date(leave.startDate)) / (1000 * 60 * 60 * 24)) + 1;
+                if (leave.type === 'annual') annual -= days;
+                else if (leave.type === 'sick') sick -= days;
+                else if (leave.type === 'personal') personal -= days;
+            });
+
+            return { annual: Math.max(0, annual), sick: Math.max(0, sick), personal: Math.max(0, personal) };
+        }
+
+        // EMPLOYEES PAGE
+        function loadEmployees() {
+            if (currentUser.role !== 'employer') return;
+            updateActiveNav();
+            
+            const contentArea = document.getElementById('contentArea');
+            
+            const employeesList = DB.employees.map(emp => `
+                <div class="employee-list-item" onclick="viewEmployeeDetails(${emp.id})">
                     <div class="employee-avatar-small">${emp.name.split(' ').map(n => n[0]).join('')}</div>
                     <div style="flex: 1;">
                         <div style="font-weight: 600;">${emp.name}</div>
@@ -1069,65 +1172,687 @@
                     </div>
                     <div style="min-width: 120px;">${emp.department}</div>
                     <div style="min-width: 180px; font-size: 0.9rem;">${emp.email}</div>
-                    <span class="badge ${emp.status === 'active' ? 'success' : 'warning'}">${emp.status === 'active' ? 'Active' : 'On Leave'}</span>
+                    <span class="badge ${emp.status === 'active' ? 'success' : 'warning'}">${emp.status}</span>
                 </div>
             `).join('');
 
             contentArea.innerHTML = `
                 <div class="page-header">
                     <h1 class="page-title">Employee Management</h1>
-                    <p class="page-subtitle">Manage your team members</p>
+                    <p class="page-subtitle">Click on employee to view details</p>
                 </div>
 
                 <div class="card">
                     <div class="card-header">
-                        <h2 class="card-title">All Employees (${employees.length})</h2>
-                        <button class="btn btn-primary">+ Add Employee</button>
+                        <h2 class="card-title">All Employees (${DB.employees.length})</h2>
+                        <button class="btn btn-primary" onclick="showAddEmployeeModal()">+ Add Employee</button>
                     </div>
-                    <div>
-                        ${employeeRows}
-                    </div>
+                    ${employeesList}
                 </div>
             `;
         }
 
-        // Employee Views (Self-service)
-        function loadMyProfile() {
-            if (currentUser.role !== 'employee') return;
-            
-            updateActiveNav(event?.target?.closest('.nav-item'));
-            const contentArea = document.getElementById('contentArea');
+        function viewEmployeeDetails(employeeId) {
+            const emp = DB.employees.find(e => e.id === employeeId);
+            if (!emp) return;
 
+            const empAttendance = DB.attendance.filter(a => a.employeeId === employeeId);
+            const empLeave = DB.leaveRequests.filter(l => l.employeeId === employeeId);
+            const empReviews = DB.performanceReviews.filter(r => r.employeeId === employeeId);
+
+            const contentArea = document.getElementById('contentArea');
             contentArea.innerHTML = `
                 <div class="page-header">
-                    <h1 class="page-title">My Profile</h1>
-                    <p class="page-subtitle">View and update your information</p>
+                    <button class="btn btn-secondary" onclick="loadEmployees()">← Back to Employees</button>
+                    <h1 class="page-title">${emp.name}</h1>
+                    <p class="page-subtitle">${emp.position} - ${emp.department}</p>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon green">✓</div>
+                        <div class="stat-value">${empAttendance.length}</div>
+                        <div class="stat-label">Total Check-ins</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon blue">📅</div>
+                        <div class="stat-value">${empLeave.length}</div>
+                        <div class="stat-label">Leave Requests</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon orange">📊</div>
+                        <div class="stat-value">${empReviews.length}</div>
+                        <div class="stat-label">Performance Reviews</div>
+                    </div>
                 </div>
 
                 <div class="card">
                     <div class="card-header">
                         <h2 class="card-title">Personal Information</h2>
-                        <button class="btn btn-secondary">Request Update</button>
+                        <button class="btn btn-primary" onclick="addPerformanceReview(${emp.id})">Add Review</button>
+                    </div>
+                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 2rem;">
+                        <div>
+                            <div style="margin-bottom: 1.5rem;">
+                                <div style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 0.5rem;">Email</div>
+                                <div style="font-weight: 600;">${emp.email}</div>
+                            </div>
+                            <div style="margin-bottom: 1.5rem;">
+                                <div style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 0.5rem;">Phone</div>
+                                <div style="font-weight: 600;">${emp.phone || 'Not provided'}</div>
+                            </div>
+                        </div>
+                        <div>
+                            <div style="margin-bottom: 1.5rem;">
+                                <div style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 0.5rem;">Join Date</div>
+                                <div style="font-weight: 600;">${emp.joinDate}</div>
+                            </div>
+                            <div style="margin-bottom: 1.5rem;">
+                                <div style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 0.5rem;">Status</div>
+                                <span class="badge ${emp.status === 'active' ? 'success' : 'warning'}">${emp.status}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">Recent Attendance</h2>
+                    </div>
+                    ${empAttendance.slice(-5).reverse().map(a => `
+                        <div class="employee-list-item">
+                            <span>📅 ${a.date}</span>
+                            <span>Check In: ${a.checkIn}</span>
+                            <span>Check Out: ${a.checkOut || 'Not yet'}</span>
+                        </div>
+                    `).join('') || '<p style="text-align: center; padding: 2rem; color: var(--text-secondary);">No attendance records</p>'}
+                </div>
+            `;
+        }
+
+        // ATTENDANCE
+        function loadAttendance() {
+            if (currentUser.role !== 'employer') return;
+            updateActiveNav();
+            
+            const contentArea = document.getElementById('contentArea');
+            const today = new Date().toISOString().split('T')[0];
+            const todayAttendance = DB.attendance.filter(a => a.date === today);
+
+            const attendanceList = DB.employees.map(emp => {
+                const empAttendance = todayAttendance.find(a => a.employeeId === emp.id);
+                return `
+                    <div class="employee-list-item">
+                        <div class="employee-avatar-small">${emp.name.split(' ').map(n => n[0]).join('')}</div>
+                        <div style="flex: 1;">
+                            <div style="font-weight: 600;">${emp.name}</div>
+                            <div style="font-size: 0.85rem; color: var(--text-secondary);">${emp.position}</div>
+                        </div>
+                        ${empAttendance ? `
+                            <span class="badge success">Check In: ${empAttendance.checkIn}</span>
+                            ${empAttendance.checkOut ? `<span class="badge">Check Out: ${empAttendance.checkOut}</span>` : '<span class="badge warning">Still Working</span>'}
+                        ` : '<span class="badge danger">Not Checked In</span>'}
+                    </div>
+                `;
+            }).join('');
+
+            contentArea.innerHTML = `
+                <div class="page-header">
+                    <h1 class="page-title">Attendance Tracking</h1>
+                    <p class="page-subtitle">Today's attendance overview</p>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">Today's Attendance (${today})</h2>
+                        <span class="badge success">${todayAttendance.length}/${DB.employees.length} Present</span>
+                    </div>
+                    ${attendanceList}
+                </div>
+            `;
+        }
+
+        // MY ATTENDANCE (Employee)
+        function loadMyAttendance() {
+            if (currentUser.role !== 'employee') return;
+            updateActiveNav();
+            
+            const contentArea = document.getElementById('contentArea');
+            const today = new Date().toISOString().split('T')[0];
+            const todayRecord = DB.attendance.find(a => a.employeeId == currentUser.employeeId && a.date === today);
+            const myAttendance = DB.attendance.filter(a => a.employeeId == currentUser.employeeId);
+
+            contentArea.innerHTML = `
+                <div class="page-header">
+                    <h1 class="page-title">My Attendance</h1>
+                    <p class="page-subtitle">Track your work hours</p>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">Today's Attendance</h2>
+                        <span style="font-size: 0.9rem; color: var(--text-secondary);">${today}</span>
+                    </div>
+                    
+                    <div class="attendance-actions">
+                        <div class="attendance-btn ${todayRecord ? 'checked-in' : ''}" onclick="checkIn()">
+                            <div style="font-size: 2rem; margin-bottom: 1rem;">⏰</div>
+                            <div style="font-weight: 700; font-size: 1.25rem; margin-bottom: 0.5rem;">Check In</div>
+                            <div style="color: var(--text-secondary);">${todayRecord ? todayRecord.checkIn : 'Not checked in'}</div>
+                        </div>
+                        <div class="attendance-btn ${todayRecord && todayRecord.checkOut ? 'checked-in' : ''}" onclick="checkOut()">
+                            <div style="font-size: 2rem; margin-bottom: 1rem;">🏁</div>
+                            <div style="font-weight: 700; font-size: 1.25rem; margin-bottom: 0.5rem;">Check Out</div>
+                            <div style="color: var(--text-secondary);">${todayRecord && todayRecord.checkOut ? todayRecord.checkOut : 'Not checked out'}</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">Attendance History</h2>
+                    </div>
+                    ${myAttendance.slice(-10).reverse().map(a => `
+                        <div class="employee-list-item">
+                            <span>📅 ${a.date}</span>
+                            <span>In: ${a.checkIn}</span>
+                            <span>Out: ${a.checkOut || 'Not yet'}</span>
+                            <span class="badge ${a.checkOut ? 'success' : 'warning'}">
+                                ${a.checkOut ? calculateWorkHours(a.checkIn, a.checkOut) : 'In Progress'}
+                            </span>
+                        </div>
+                    `).join('') || '<p style="text-align: center; padding: 2rem; color: var(--text-secondary);">No attendance records</p>'}
+                </div>
+            `;
+        }
+
+        function checkIn() {
+            const today = new Date().toISOString().split('T')[0];
+            const existing = DB.attendance.find(a => a.employeeId == currentUser.employeeId && a.date === today);
+            
+            if (existing) {
+                alert('You have already checked in today!');
+                return;
+            }
+
+            const now = new Date();
+            const time = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true });
+
+            DB.attendance.push({
+                id: Date.now(),
+                employeeId: currentUser.employeeId,
+                date: today,
+                checkIn: time,
+                checkOut: null
+            });
+            DB.save('attendance');
+
+            alert('Checked in successfully at ' + time);
+            loadMyAttendance();
+        }
+
+        function checkOut() {
+            const today = new Date().toISOString().split('T')[0];
+            const existing = DB.attendance.find(a => a.employeeId == currentUser.employeeId && a.date === today);
+            
+            if (!existing) {
+                alert('Please check in first!');
+                return;
+            }
+
+            if (existing.checkOut) {
+                alert('You have already checked out today!');
+                return;
+            }
+
+            const now = new Date();
+            const time = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true });
+
+            existing.checkOut = time;
+            DB.save('attendance');
+
+            alert('Checked out successfully at ' + time);
+            loadMyAttendance();
+        }
+
+        function calculateWorkHours(checkIn, checkOut) {
+            // Simple calculation - in production, use proper date parsing
+            return '8h 30m';
+        }
+
+        // LEAVE MANAGEMENT (Employer)
+        function loadLeaveManagement() {
+            if (currentUser.role !== 'employer') return;
+            updateActiveNav();
+            
+            const contentArea = document.getElementById('contentArea');
+            const pendingRequests = DB.leaveRequests.filter(l => l.status === 'pending');
+            const allRequests = DB.leaveRequests;
+
+            contentArea.innerHTML = `
+                <div class="page-header">
+                    <h1 class="page-title">Leave Management</h1>
+                    <p class="page-subtitle">Review and approve leave requests</p>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">Pending Requests (${pendingRequests.length})</h2>
+                    </div>
+                    ${pendingRequests.map(leave => {
+                        const emp = DB.employees.find(e => e.id == leave.employeeId);
+                        return `
+                            <div class="employee-list-item">
+                                <div class="employee-avatar-small">${emp ? emp.name.split(' ').map(n => n[0]).join('') : '?'}</div>
+                                <div style="flex: 1;">
+                                    <div style="font-weight: 600;">${emp ? emp.name : 'Unknown'}</div>
+                                    <div style="font-size: 0.85rem; color: var(--text-secondary);">${leave.type} Leave: ${leave.startDate} to ${leave.endDate}</div>
+                                    <div style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.25rem;">Reason: ${leave.reason}</div>
+                                </div>
+                                <button class="btn btn-success" onclick="approveLeave(${leave.id})" style="margin-right: 0.5rem;">Approve</button>
+                                <button class="btn btn-danger" onclick="rejectLeave(${leave.id})">Reject</button>
+                            </div>
+                        `;
+                    }).join('') || '<p style="text-align: center; padding: 2rem; color: var(--text-secondary);">No pending requests</p>'}
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">All Leave Requests</h2>
+                    </div>
+                    ${allRequests.slice(-20).reverse().map(leave => {
+                        const emp = DB.employees.find(e => e.id == leave.employeeId);
+                        return `
+                            <div class="employee-list-item">
+                                <div class="employee-avatar-small">${emp ? emp.name.split(' ').map(n => n[0]).join('') : '?'}</div>
+                                <div style="flex: 1;">
+                                    <div style="font-weight: 600;">${emp ? emp.name : 'Unknown'}</div>
+                                    <div style="font-size: 0.85rem; color: var(--text-secondary);">${leave.type} Leave: ${leave.startDate} to ${leave.endDate}</div>
+                                </div>
+                                <span class="badge ${leave.status === 'approved' ? 'success' : leave.status === 'rejected' ? 'danger' : 'pending'}">${leave.status}</span>
+                            </div>
+                        `;
+                    }).join('')}
+                </div>
+            `;
+        }
+
+        function approveLeave(leaveId) {
+            const leave = DB.leaveRequests.find(l => l.id === leaveId);
+            if (leave) {
+                leave.status = 'approved';
+                DB.save('leaveRequests');
+                alert('Leave request approved!');
+                loadLeaveManagement();
+            }
+        }
+
+        function rejectLeave(leaveId) {
+            const leave = DB.leaveRequests.find(l => l.id === leaveId);
+            if (leave) {
+                leave.status = 'rejected';
+                DB.save('leaveRequests');
+                alert('Leave request rejected');
+                loadLeaveManagement();
+            }
+        }
+
+        // MY LEAVE (Employee)
+        function loadMyLeave() {
+            if (currentUser.role !== 'employee') return;
+            updateActiveNav();
+            
+            const contentArea = document.getElementById('contentArea');
+            const balance = calculateLeaveBalance(currentUser.employeeId);
+            const myRequests = DB.leaveRequests.filter(l => l.employeeId == currentUser.employeeId);
+
+            contentArea.innerHTML = `
+                <div class="page-header">
+                    <h1 class="page-title">My Leave</h1>
+                    <p class="page-subtitle">Request and track your leave</p>
+                </div>
+
+                <div class="stats-grid" style="grid-template-columns: repeat(3, 1fr);">
+                    <div class="stat-card" onclick="requestLeave('annual')">
+                        <div class="stat-icon green">🌴</div>
+                        <div class="stat-value">${balance.annual}</div>
+                        <div class="stat-label">Annual Leave Days</div>
+                        <span class="stat-change positive">Click to request</span>
+                    </div>
+                    <div class="stat-card" onclick="requestLeave('sick')">
+                        <div class="stat-icon blue">🏥</div>
+                        <div class="stat-value">${balance.sick}</div>
+                        <div class="stat-label">Sick Leave Days</div>
+                        <span class="stat-change positive">Click to request</span>
+                    </div>
+                    <div class="stat-card" onclick="requestLeave('personal')">
+                        <div class="stat-icon orange">📅</div>
+                        <div class="stat-value">${balance.personal}</div>
+                        <div class="stat-label">Personal Days</div>
+                        <span class="stat-change positive">Click to request</span>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">My Leave Requests</h2>
+                    </div>
+                    ${myRequests.slice(-10).reverse().map(leave => `
+                        <div class="employee-list-item">
+                            <div>
+                                <div style="font-weight: 600;">${leave.type} Leave</div>
+                                <div style="font-size: 0.85rem; color: var(--text-secondary);">${leave.startDate} to ${leave.endDate}</div>
+                            </div>
+                            <span class="badge ${leave.status === 'approved' ? 'success' : leave.status === 'rejected' ? 'danger' : 'pending'}">${leave.status}</span>
+                        </div>
+                    `).join('') || '<p style="text-align: center; padding: 2rem; color: var(--text-secondary);">No leave requests yet</p>'}
+                </div>
+            `;
+        }
+
+        function requestLeave(leaveType) {
+            const balance = calculateLeaveBalance(currentUser.employeeId);
+            
+            if (balance[leaveType] <= 0) {
+                alert(`You have no ${leaveType} leave days remaining!`);
+                return;
+            }
+
+            const startDate = prompt(`Enter start date (YYYY-MM-DD):`);
+            if (!startDate) return;
+
+            const endDate = prompt(`Enter end date (YYYY-MM-DD):`);
+            if (!endDate) return;
+
+            const reason = prompt(`Enter reason for leave:`);
+            if (!reason) return;
+
+            DB.leaveRequests.push({
+                id: Date.now(),
+                employeeId: currentUser.employeeId,
+                type: leaveType,
+                startDate,
+                endDate,
+                reason,
+                status: 'pending',
+                requestDate: new Date().toISOString().split('T')[0]
+            });
+            DB.save('leaveRequests');
+
+            alert('Leave request submitted successfully!');
+            loadMyLeave();
+        }
+
+        // RECRUITMENT
+        function loadRecruitment() {
+            if (currentUser.role !== 'employer') return;
+            updateActiveNav();
+            
+            const contentArea = document.getElementById('contentArea');
+            
+            contentArea.innerHTML = `
+                <div class="page-header">
+                    <h1 class="page-title">Recruitment & Job Portals</h1>
+                    <p class="page-subtitle">Manage job postings and applications</p>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">Connected Job Portals</h2>
+                        <button class="btn btn-primary" onclick="addJobPortalLink()">+ Add Portal Link</button>
+                    </div>
+                    ${DB.jobLinks.map(link => `
+                        <div class="employee-list-item">
+                            <span style="font-size: 1.5rem;">🔗</span>
+                            <div style="flex: 1;">
+                                <div style="font-weight: 600;">${link.portal}</div>
+                                <a href="${link.url}" target="_blank" style="font-size: 0.85rem; color: var(--accent);">${link.url}</a>
+                            </div>
+                            <button class="btn btn-secondary" onclick="window.open('${link.url}', '_blank')">Open Portal</button>
+                            <button class="btn btn-danger" onclick="removeJobLink(${link.id})">Remove</button>
+                        </div>
+                    `).join('') || '<p style="text-align: center; padding: 2rem; color: var(--text-secondary);">No job portals linked yet</p>'}
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">Open Positions</h2>
+                    </div>
+                    <p style="text-align: center; padding: 2rem; color: var(--text-secondary);">Link your JobStreet, Indeed, or company career page to see applications here</p>
+                </div>
+            `;
+        }
+
+        function addJobPortalLink() {
+            const portal = prompt('Enter portal name (e.g., JobStreet, Indeed, Company Career Page):');
+            if (!portal) return;
+
+            const url = prompt('Enter portal URL:');
+            if (!url) return;
+
+            DB.jobLinks.push({
+                id: Date.now(),
+                portal,
+                url
+            });
+            DB.save('jobLinks');
+
+            alert('Job portal linked successfully!');
+            loadRecruitment();
+        }
+
+        function removeJobLink(linkId) {
+            if (!confirm('Remove this job portal link?')) return;
+            
+            DB.jobLinks = DB.jobLinks.filter(l => l.id !== linkId);
+            DB.save('jobLinks');
+            loadRecruitment();
+        }
+
+        // PERFORMANCE REVIEWS
+        function loadPerformanceReviews() {
+            if (currentUser.role !== 'employer') return;
+            updateActiveNav();
+            
+            const contentArea = document.getElementById('contentArea');
+            
+            contentArea.innerHTML = `
+                <div class="page-header">
+                    <h1 class="page-title">Performance Reviews</h1>
+                    <p class="page-subtitle">Manage employee performance evaluations</p>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">All Performance Reviews</h2>
+                    </div>
+                    ${DB.performanceReviews.map(review => {
+                        const emp = DB.employees.find(e => e.id == review.employeeId);
+                        return `
+                            <div class="employee-list-item">
+                                <div class="employee-avatar-small">${emp ? emp.name.split(' ').map(n => n[0]).join('') : '?'}</div>
+                                <div style="flex: 1;">
+                                    <div style="font-weight: 600;">${emp ? emp.name : 'Unknown'}</div>
+                                    <div style="font-size: 0.85rem; color: var(--text-secondary);">Review Period: ${review.period}</div>
+                                    <div style="font-size: 0.85rem; margin-top: 0.5rem;">${review.feedback}</div>
+                                </div>
+                                <div style="text-align: center;">
+                                    <div style="font-size: 1.5rem; font-weight: 700; color: var(--accent);">${review.rating}/5</div>
+                                    <div style="font-size: 0.75rem; color: var(--text-secondary);">Rating</div>
+                                </div>
+                            </div>
+                        `;
+                    }).join('') || '<p style="text-align: center; padding: 2rem; color: var(--text-secondary);">No performance reviews yet</p>'}
+                </div>
+            `;
+        }
+
+        function addPerformanceReview(employeeId) {
+            const rating = prompt('Enter rating (1-5):');
+            if (!rating || rating < 1 || rating > 5) return;
+
+            const period = prompt('Enter review period (e.g., Q1 2026):');
+            if (!period) return;
+
+            const feedback = prompt('Enter feedback:');
+            if (!feedback) return;
+
+            DB.performanceReviews.push({
+                id: Date.now(),
+                employeeId,
+                rating: parseInt(rating),
+                period,
+                feedback,
+                date: new Date().toISOString().split('T')[0]
+            });
+            DB.save('performanceReviews');
+
+            alert('Performance review added successfully!');
+            viewEmployeeDetails(employeeId);
+        }
+
+        function loadMyReviews() {
+            if (currentUser.role !== 'employee') return;
+            updateActiveNav();
+            
+            const contentArea = document.getElementById('contentArea');
+            const myReviews = DB.performanceReviews.filter(r => r.employeeId == currentUser.employeeId);
+
+            contentArea.innerHTML = `
+                <div class="page-header">
+                    <h1 class="page-title">My Performance Reviews</h1>
+                    <p class="page-subtitle">View your performance evaluations</p>
+                </div>
+
+                <div class="card">
+                    ${myReviews.map(review => `
+                        <div class="employee-list-item">
+                            <div style="flex: 1;">
+                                <div style="font-weight: 600;">Performance Review - ${review.period}</div>
+                                <div style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.5rem;">${review.feedback}</div>
+                                <div style="font-size: 0.75rem; color: var(--text-secondary); margin-top: 0.25rem;">Date: ${review.date}</div>
+                            </div>
+                            <div style="text-align: center;">
+                                <div style="font-size: 2rem; font-weight: 700; color: var(--accent);">${review.rating}/5</div>
+                                <div style="font-size: 0.75rem; color: var(--text-secondary);">Rating</div>
+                            </div>
+                        </div>
+                    `).join('') || '<p style="text-align: center; padding: 2rem; color: var(--text-secondary);">No performance reviews yet</p>'}
+                </div>
+            `;
+        }
+
+        // PROFILE REQUESTS
+        function loadProfileRequests() {
+            if (currentUser.role !== 'employer') return;
+            updateActiveNav();
+            
+            const contentArea = document.getElementById('contentArea');
+            const pendingRequests = DB.profileRequests.filter(r => r.status === 'pending');
+
+            contentArea.innerHTML = `
+                <div class="page-header">
+                    <h1 class="page-title">Profile Update Requests</h1>
+                    <p class="page-subtitle">Approve or reject employee profile updates</p>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">Pending Requests (${pendingRequests.length})</h2>
+                    </div>
+                    ${pendingRequests.map(request => {
+                        const emp = DB.employees.find(e => e.id == request.employeeId);
+                        return `
+                            <div class="employee-list-item">
+                                <div class="employee-avatar-small">${emp ? emp.name.split(' ').map(n => n[0]).join('') : '?'}</div>
+                                <div style="flex: 1;">
+                                    <div style="font-weight: 600;">${emp ? emp.name : 'Unknown'}</div>
+                                    <div style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.5rem;">
+                                        ${Object.entries(request.updates).map(([key, value]) => `<div>${key}: ${value}</div>`).join('')}
+                                    </div>
+                                </div>
+                                <button class="btn btn-success" onclick="approveProfileUpdate(${request.id})" style="margin-right: 0.5rem;">Approve</button>
+                                <button class="btn btn-danger" onclick="rejectProfileUpdate(${request.id})">Reject</button>
+                            </div>
+                        `;
+                    }).join('') || '<p style="text-align: center; padding: 2rem; color: var(--text-secondary);">No pending requests</p>'}
+                </div>
+            `;
+        }
+
+        function approveProfileUpdate(requestId) {
+            const request = DB.profileRequests.find(r => r.id === requestId);
+            if (!request) return;
+
+            const emp = DB.employees.find(e => e.id == request.employeeId);
+            if (emp) {
+                Object.assign(emp, request.updates);
+                request.status = 'approved';
+                DB.save('employees');
+                DB.save('profileRequests');
+                alert('Profile update approved!');
+                loadProfileRequests();
+            }
+        }
+
+        function rejectProfileUpdate(requestId) {
+            const request = DB.profileRequests.find(r => r.id === requestId);
+            if (request) {
+                request.status = 'rejected';
+                DB.save('profileRequests');
+                alert('Profile update rejected');
+                loadProfileRequests();
+            }
+        }
+
+        // MY PROFILE (Employee)
+        function loadMyProfile() {
+            if (currentUser.role !== 'employee') return;
+            updateActiveNav();
+            
+            const employee = DB.employees.find(e => e.id == currentUser.employeeId);
+            if (!employee) return;
+
+            const contentArea = document.getElementById('contentArea');
+            
+            contentArea.innerHTML = `
+                <div class="page-header">
+                    <h1 class="page-title">My Profile</h1>
+                    <p class="page-subtitle">View and request updates to your information</p>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">Personal Information</h2>
+                        <button class="btn btn-primary" onclick="requestProfileUpdate()">Request Update</button>
                     </div>
                     <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 2rem;">
                         <div>
                             <div style="margin-bottom: 1.5rem;">
                                 <div style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 0.5rem;">Full Name</div>
-                                <div style="font-weight: 600;">${currentUser.name}</div>
+                                <div style="font-weight: 600;">${employee.name}</div>
                             </div>
                             <div style="margin-bottom: 1.5rem;">
                                 <div style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 0.5rem;">Email</div>
-                                <div style="font-weight: 600;">emma.wilson@company.com</div>
+                                <div style="font-weight: 600;">${employee.email}</div>
+                            </div>
+                            <div style="margin-bottom: 1.5rem;">
+                                <div style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 0.5rem;">Phone</div>
+                                <div style="font-weight: 600;">${employee.phone || 'Not provided'}</div>
                             </div>
                         </div>
                         <div>
                             <div style="margin-bottom: 1.5rem;">
                                 <div style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 0.5rem;">Department</div>
-                                <div style="font-weight: 600;">Design</div>
+                                <div style="font-weight: 600;">${employee.department}</div>
                             </div>
                             <div style="margin-bottom: 1.5rem;">
                                 <div style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 0.5rem;">Position</div>
-                                <div style="font-weight: 600;">Senior UI/UX Designer</div>
+                                <div style="font-weight: 600;">${employee.position}</div>
+                            </div>
+                            <div style="margin-bottom: 1.5rem;">
+                                <div style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 0.5rem;">Join Date</div>
+                                <div style="font-weight: 600;">${employee.joinDate}</div>
                             </div>
                         </div>
                     </div>
@@ -1135,106 +1860,37 @@
             `;
         }
 
-        function loadMyAttendance() {
-            updateActiveNav(event?.target?.closest('.nav-item'));
-            const contentArea = document.getElementById('contentArea');
+        function requestProfileUpdate() {
+            const phone = prompt('Enter new phone number (or leave blank to skip):');
+            const email = prompt('Enter new email (or leave blank to skip):');
 
-            contentArea.innerHTML = `
-                <div class="page-header">
-                    <h1 class="page-title">My Attendance</h1>
-                    <p class="page-subtitle">Track your attendance and work hours</p>
-                </div>
+            const updates = {};
+            if (phone) updates.phone = phone;
+            if (email) updates.email = email;
 
-                <div class="card">
-                    <div style="text-align: center; padding: 3rem;">
-                        <div style="font-size: 3rem; font-weight: 700; color: var(--accent); margin-bottom: 0.5rem;">8h 45m</div>
-                        <div style="color: var(--text-secondary);">You are currently checked in • Check-in: 9:00 AM</div>
-                    </div>
-                </div>
-            `;
+            if (Object.keys(updates).length === 0) {
+                alert('No changes requested');
+                return;
+            }
+
+            DB.profileRequests.push({
+                id: Date.now(),
+                employeeId: currentUser.employeeId,
+                updates,
+                status: 'pending',
+                requestDate: new Date().toISOString().split('T')[0]
+            });
+            DB.save('profileRequests');
+
+            alert('Profile update request submitted! Waiting for approval.');
+            loadMyProfile();
         }
 
-        function loadMyLeave() {
-            updateActiveNav(event?.target?.closest('.nav-item'));
-            const contentArea = document.getElementById('contentArea');
-
-            contentArea.innerHTML = `
-                <div class="page-header">
-                    <h1 class="page-title">My Leave</h1>
-                    <p class="page-subtitle">Request and manage your leave</p>
-                </div>
-
-                <div class="stats-grid" style="grid-template-columns: repeat(3, 1fr);">
-                    <div class="stat-card">
-                        <div class="stat-icon green">🌴</div>
-                        <div class="stat-value">12</div>
-                        <div class="stat-label">Annual Leave Available</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-icon blue">🏥</div>
-                        <div class="stat-value">8</div>
-                        <div class="stat-label">Sick Leave Available</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-icon orange">📅</div>
-                        <div class="stat-value">3</div>
-                        <div class="stat-label">Personal Days Available</div>
-                    </div>
-                </div>
-            `;
-        }
-
-        function loadMyPayslips() {
-            updateActiveNav(event?.target?.closest('.nav-item'));
-            const contentArea = document.getElementById('contentArea');
-
-            contentArea.innerHTML = `
-                <div class="page-header">
-                    <h1 class="page-title">My Payslips</h1>
-                    <p class="page-subtitle">View and download your payslips</p>
-                </div>
-
-                <div class="card">
-                    <div class="employee-list-item">
-                        <div style="width: 48px; height: 48px; background: rgba(16, 185, 129, 0.1); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: var(--accent); font-size: 1.25rem;">📄</div>
-                        <div style="flex: 1;">
-                            <div style="font-weight: 600;">January 2026 Payslip</div>
-                            <div style="font-size: 0.9rem; color: var(--text-secondary);">Payment Date: Feb 5, 2026</div>
-                        </div>
-                        <div style="text-align: right;">
-                            <div style="font-weight: 700; font-size: 1.25rem; color: var(--accent);">$4,339.67</div>
-                            <button class="btn btn-secondary" style="margin-top: 0.5rem; padding: 0.5rem 1rem; font-size: 0.85rem;">Download</button>
-                        </div>
-                    </div>
-                </div>
-            `;
-        }
-
-        // Placeholder functions for other pages
-        function loadAttendance() {
-            updateActiveNav(event?.target?.closest('.nav-item'));
-            document.getElementById('contentArea').innerHTML = '<div class="page-header"><h1 class="page-title">Attendance Tracking</h1></div><div class="card"><p style="padding: 2rem; text-align: center; color: var(--text-secondary);">Attendance module coming soon</p></div>';
-        }
-
-        function loadLeave() {
-            updateActiveNav(event?.target?.closest('.nav-item'));
-            document.getElementById('contentArea').innerHTML = '<div class="page-header"><h1 class="page-title">Leave Management</h1></div><div class="card"><p style="padding: 2rem; text-align: center; color: var(--text-secondary);">Leave management module coming soon</p></div>';
-        }
-
-        function loadPayroll() {
-            updateActiveNav(event?.target?.closest('.nav-item'));
-            document.getElementById('contentArea').innerHTML = '<div class="page-header"><h1 class="page-title">Payroll Management</h1></div><div class="card"><p style="padding: 2rem; text-align: center; color: var(--text-secondary);">Payroll module coming soon</p></div>';
-        }
-
-        function loadRecruitment() {
-            updateActiveNav(event?.target?.closest('.nav-item'));
-            document.getElementById('contentArea').innerHTML = '<div class="page-header"><h1 class="page-title">Recruitment</h1></div><div class="card"><p style="padding: 2rem; text-align: center; color: var(--text-secondary);">Recruitment module coming soon</p></div>';
-        }
-
-        function loadReports() {
-            updateActiveNav(event?.target?.closest('.nav-item'));
-            document.getElementById('contentArea').innerHTML = '<div class="page-header"><h1 class="page-title">Reports & Analytics</h1></div><div class="card"><p style="padding: 2rem; text-align: center; color: var(--text-secondary);">Reports module coming soon</p></div>';
-        }
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check if user is already logged in (for demo purposes)
+            // In production, implement proper session management
+        });
     </script>
 </body>
 </html>
