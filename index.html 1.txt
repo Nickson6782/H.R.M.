@@ -1,0 +1,1240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HRMaster - Role-Based HR Management System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Newsreader:wght@600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #0F172A;
+            --primary-light: #1E293B;
+            --accent: #10B981;
+            --accent-dark: #059669;
+            --secondary: #F59E0B;
+            --danger: #EF4444;
+            --warning: #F59E0B;
+            --info: #3B82F6;
+            --bg-main: #F8FAFC;
+            --bg-card: #FFFFFF;
+            --text-primary: #0F172A;
+            --text-secondary: #64748B;
+            --text-light: #94A3B8;
+            --border: #E2E8F0;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg-main);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        /* Login Screen */
+        .login-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            padding: 2rem;
+        }
+
+        .login-card {
+            background: var(--bg-card);
+            border-radius: 20px;
+            padding: 3rem;
+            max-width: 450px;
+            width: 100%;
+            box-shadow: var(--shadow-xl);
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .login-logo {
+            font-family: 'Newsreader', serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--accent), var(--info));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+        }
+
+        .login-subtitle {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        .role-selector {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .role-option {
+            padding: 1.5rem 1rem;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+        }
+
+        .role-option:hover {
+            border-color: var(--accent);
+            background: rgba(16, 185, 129, 0.05);
+        }
+
+        .role-option.selected {
+            border-color: var(--accent);
+            background: rgba(16, 185, 129, 0.1);
+        }
+
+        .role-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .role-title {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .role-desc {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        .app {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            min-height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            background: var(--primary);
+            color: white;
+            padding: 2rem 0;
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            overflow-y: auto;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .logo {
+            padding: 0 2rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .logo h1 {
+            font-family: 'Newsreader', serif;
+            font-size: 1.75rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #10B981, #3B82F6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .logo p {
+            font-size: 0.75rem;
+            color: var(--text-light);
+            margin-top: 0.25rem;
+            letter-spacing: 0.05em;
+        }
+
+        .user-role-badge {
+            margin: 0 2rem 2rem 2rem;
+            padding: 0.75rem 1rem;
+            background: rgba(16, 185, 129, 0.1);
+            border-radius: 10px;
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+
+        .user-role-badge .role {
+            font-weight: 600;
+            color: var(--accent);
+            font-size: 0.9rem;
+        }
+
+        .user-role-badge .name {
+            font-size: 0.85rem;
+            color: #CBD5E1;
+            margin-top: 0.25rem;
+        }
+
+        .nav-section {
+            margin-bottom: 2rem;
+        }
+
+        .nav-title {
+            padding: 0 2rem;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-light);
+            margin-bottom: 0.75rem;
+            font-weight: 600;
+        }
+
+        .nav-item {
+            padding: 0.875rem 2rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            color: #CBD5E1;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            border-left: 3px solid transparent;
+        }
+
+        .nav-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: white;
+        }
+
+        .nav-item.active {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--accent);
+            border-left-color: var(--accent);
+            font-weight: 600;
+        }
+
+        .nav-icon {
+            width: 20px;
+            height: 20px;
+            flex-shrink: 0;
+        }
+
+        .logout-btn {
+            margin: 2rem 2rem 0 2rem;
+            padding: 0.875rem 1rem;
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            border-radius: 10px;
+            color: #FCA5A5;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-family: inherit;
+            font-size: 0.95rem;
+            font-weight: 500;
+            width: calc(100% - 4rem);
+        }
+
+        .logout-btn:hover {
+            background: rgba(239, 68, 68, 0.2);
+        }
+
+        /* Main Content */
+        .main-content {
+            background: var(--bg-main);
+            overflow-y: auto;
+        }
+
+        /* Top Bar */
+        .top-bar {
+            background: var(--bg-card);
+            padding: 1.5rem 2.5rem;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .search-container {
+            flex: 1;
+            max-width: 500px;
+        }
+
+        .search-box {
+            position: relative;
+            width: 100%;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 0.75rem 1rem 0.75rem 3rem;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            font-family: inherit;
+            font-size: 0.95rem;
+            transition: all 0.2s;
+            background: var(--bg-main);
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-secondary);
+        }
+
+        .top-bar-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .icon-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            background: var(--bg-card);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            position: relative;
+        }
+
+        .icon-btn:hover {
+            background: var(--bg-main);
+            border-color: var(--accent);
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: -4px;
+            right: -4px;
+            width: 18px;
+            height: 18px;
+            background: var(--danger);
+            border-radius: 50%;
+            font-size: 0.7rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.5rem 1rem;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .user-profile:hover {
+            background: var(--bg-main);
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent), var(--info));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+        }
+
+        .user-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .user-name {
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .user-role {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        /* Content Area */
+        .content-area {
+            padding: 2.5rem;
+        }
+
+        .page-header {
+            margin-bottom: 2rem;
+        }
+
+        .page-title {
+            font-family: 'Newsreader', serif;
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .page-subtitle {
+            color: var(--text-secondary);
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 10px;
+            border: none;
+            font-family: inherit;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.95rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--accent-dark);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-secondary {
+            background: var(--bg-card);
+            color: var(--text-primary);
+            border: 1px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--accent);
+            background: var(--bg-main);
+        }
+
+        /* Cards */
+        .card {
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 1.75rem;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border);
+            transition: all 0.3s;
+            margin-bottom: 1.5rem;
+        }
+
+        .card:hover {
+            box-shadow: var(--shadow-md);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .card-title {
+            font-family: 'Newsreader', serif;
+            font-size: 1.25rem;
+            font-weight: 700;
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: var(--bg-card);
+            padding: 1.75rem;
+            border-radius: 16px;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--accent);
+            transform: scaleX(0);
+            transition: transform 0.3s;
+        }
+
+        .stat-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .stat-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .stat-icon.green { background: rgba(16, 185, 129, 0.1); color: var(--accent); }
+        .stat-icon.blue { background: rgba(59, 130, 246, 0.1); color: var(--info); }
+        .stat-icon.orange { background: rgba(245, 158, 11, 0.1); color: var(--secondary); }
+        .stat-icon.red { background: rgba(239, 68, 68, 0.1); color: var(--danger); }
+
+        .stat-value {
+            font-size: 2.25rem;
+            font-weight: 800;
+            margin-bottom: 0.25rem;
+            line-height: 1;
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .stat-change {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+            font-size: 0.85rem;
+            font-weight: 600;
+            padding: 0.25rem 0.5rem;
+            border-radius: 6px;
+        }
+
+        .stat-change.positive {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--accent);
+        }
+
+        .stat-change.negative {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--danger);
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.4rem 0.875rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .badge.success { background: rgba(16, 185, 129, 0.15); color: var(--accent); }
+        .badge.warning { background: rgba(245, 158, 11, 0.15); color: var(--secondary); }
+        .badge.danger { background: rgba(239, 68, 68, 0.15); color: var(--danger); }
+        .badge.info { background: rgba(59, 130, 246, 0.15); color: var(--info); }
+
+        .badge::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: currentColor;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .form-input,
+        .form-select,
+        .form-textarea {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            font-family: inherit;
+            font-size: 0.95rem;
+            transition: all 0.2s;
+            background: var(--bg-main);
+        }
+
+        .form-input:focus,
+        .form-select:focus,
+        .form-textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .employee-list-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: var(--bg-main);
+            border-radius: 12px;
+            margin-bottom: 0.75rem;
+            transition: all 0.2s;
+        }
+
+        .employee-list-item:hover {
+            background: rgba(16, 185, 129, 0.05);
+        }
+
+        .employee-avatar-small {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent), var(--info));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .app {
+                grid-template-columns: 1fr;
+            }
+            
+            .sidebar {
+                display: none;
+            }
+
+            .content-area {
+                padding: 1.5rem;
+            }
+
+            .top-bar {
+                padding: 1rem;
+            }
+
+            .search-container {
+                max-width: 200px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .login-card {
+                padding: 2rem;
+            }
+
+            .page-title {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Screen -->
+    <div id="loginScreen" class="login-container">
+        <div class="login-card">
+            <div class="login-header">
+                <div class="login-logo">HRMaster</div>
+                <p class="login-subtitle">Role-Based HR Management System</p>
+            </div>
+
+            <div class="role-selector">
+                <div class="role-option" onclick="selectRole('hr-manager')">
+                    <div class="role-icon">👔</div>
+                    <div class="role-title">HR Manager</div>
+                    <div class="role-desc">Full admin access</div>
+                </div>
+                <div class="role-option" onclick="selectRole('employee')">
+                    <div class="role-icon">👤</div>
+                    <div class="role-title">Employee</div>
+                    <div class="role-desc">Self-service portal</div>
+                </div>
+            </div>
+
+            <form onsubmit="login(event)">
+                <div class="form-group">
+                    <label class="form-label">Email</label>
+                    <input type="email" class="form-input" placeholder="email@company.com" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Password</label>
+                    <input type="password" class="form-input" placeholder="Enter password" required>
+                </div>
+
+                <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center;">
+                    Login
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Main Application -->
+    <div id="mainApp" class="app hidden">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="logo">
+                <h1>HRMaster</h1>
+                <p>Complete HR Solution</p>
+            </div>
+
+            <div class="user-role-badge" id="roleBadge">
+                <div class="role">HR Manager</div>
+                <div class="name">Sarah Johnson</div>
+            </div>
+
+            <nav id="mainNav">
+                <!-- Navigation will be inserted here based on role -->
+            </nav>
+
+            <button class="logout-btn" onclick="logout()">
+                <span>🚪</span>
+                Logout
+            </button>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Top Bar -->
+            <div class="top-bar">
+                <div class="search-container">
+                    <div class="search-box">
+                        <span class="search-icon">🔍</span>
+                        <input type="text" placeholder="Search employees, records...">
+                    </div>
+                </div>
+                <div class="top-bar-actions">
+                    <div class="icon-btn">
+                        <span>🔔</span>
+                        <span class="notification-badge">3</span>
+                    </div>
+                    <div class="user-profile">
+                        <div class="user-avatar" id="userAvatar">SJ</div>
+                        <div class="user-info">
+                            <div class="user-name" id="userName">Sarah Johnson</div>
+                            <div class="user-role" id="userRoleDisplay">HR Manager</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Content Area -->
+            <div class="content-area" id="contentArea">
+                <!-- Content will be loaded here -->
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Global state
+        let currentUser = {
+            role: null,
+            name: '',
+            avatar: ''
+        };
+
+        let employees = [
+            { id: 1, name: 'Emma Wilson', position: 'Senior UI/UX Designer', department: 'Design', email: 'emma.w@company.com', status: 'active' },
+            { id: 2, name: 'Michael Chen', position: 'Senior Backend Developer', department: 'Engineering', email: 'm.chen@company.com', status: 'active' },
+            { id: 3, name: 'Sarah Davis', position: 'Product Manager', department: 'Product', email: 's.davis@company.com', status: 'active' },
+            { id: 4, name: 'James Rodriguez', position: 'Marketing Manager', department: 'Marketing', email: 'j.rodriguez@company.com', status: 'on-leave' }
+        ];
+
+        let selectedRole = null;
+
+        // Role selection
+        function selectRole(role) {
+            selectedRole = role;
+            document.querySelectorAll('.role-option').forEach(opt => opt.classList.remove('selected'));
+            event.target.closest('.role-option').classList.add('selected');
+        }
+
+        // Login function
+        function login(event) {
+            event.preventDefault();
+            
+            if (!selectedRole) {
+                alert('Please select a role');
+                return;
+            }
+
+            // Set user based on role
+            if (selectedRole === 'hr-manager') {
+                currentUser = {
+                    role: 'hr-manager',
+                    name: 'Sarah Johnson',
+                    avatar: 'SJ'
+                };
+            } else {
+                currentUser = {
+                    role: 'employee',
+                    name: 'Emma Wilson',
+                    avatar: 'EW'
+                };
+            }
+
+            // Hide login, show app
+            document.getElementById('loginScreen').classList.add('hidden');
+            document.getElementById('mainApp').classList.remove('hidden');
+
+            // Initialize UI based on role
+            initializeUI();
+        }
+
+        // Logout function
+        function logout() {
+            currentUser = { role: null, name: '', avatar: '' };
+            document.getElementById('mainApp').classList.add('hidden');
+            document.getElementById('loginScreen').classList.remove('hidden');
+            selectedRole = null;
+            document.querySelectorAll('.role-option').forEach(opt => opt.classList.remove('selected'));
+        }
+
+        // Initialize UI based on user role
+        function initializeUI() {
+            // Update user info in UI
+            document.getElementById('userName').textContent = currentUser.name;
+            document.getElementById('userAvatar').textContent = currentUser.avatar;
+            document.getElementById('userRoleDisplay').textContent = currentUser.role === 'hr-manager' ? 'HR Manager' : 'Employee';
+            
+            // Update role badge
+            document.querySelector('.user-role-badge .role').textContent = currentUser.role === 'hr-manager' ? 'HR Manager' : 'Employee';
+            document.querySelector('.user-role-badge .name').textContent = currentUser.name;
+
+            // Load navigation based on role
+            loadNavigation();
+
+            // Load dashboard
+            loadDashboard();
+        }
+
+        // Load navigation based on role
+        function loadNavigation() {
+            const nav = document.getElementById('mainNav');
+            
+            if (currentUser.role === 'hr-manager') {
+                // HR Manager - Full Access
+                nav.innerHTML = `
+                    <div class="nav-section">
+                        <div class="nav-title">Main</div>
+                        <div class="nav-item active" onclick="loadDashboard()">
+                            <span>🏠</span>
+                            <span>Dashboard</span>
+                        </div>
+                        <div class="nav-item" onclick="loadEmployees()">
+                            <span>👥</span>
+                            <span>Employees</span>
+                        </div>
+                        <div class="nav-item" onclick="loadAttendance()">
+                            <span>🕐</span>
+                            <span>Attendance</span>
+                        </div>
+                        <div class="nav-item" onclick="loadLeave()">
+                            <span>📅</span>
+                            <span>Leave Management</span>
+                        </div>
+                    </div>
+
+                    <div class="nav-section">
+                        <div class="nav-title">Administration</div>
+                        <div class="nav-item" onclick="loadPayroll()">
+                            <span>💰</span>
+                            <span>Payroll</span>
+                        </div>
+                        <div class="nav-item" onclick="loadRecruitment()">
+                            <span>💼</span>
+                            <span>Recruitment</span>
+                        </div>
+                        <div class="nav-item" onclick="loadReports()">
+                            <span>📊</span>
+                            <span>Reports</span>
+                        </div>
+                    </div>
+                `;
+            } else {
+                // Employee - Restricted Access
+                nav.innerHTML = `
+                    <div class="nav-section">
+                        <div class="nav-title">My Portal</div>
+                        <div class="nav-item active" onclick="loadDashboard()">
+                            <span>🏠</span>
+                            <span>My Dashboard</span>
+                        </div>
+                        <div class="nav-item" onclick="loadMyProfile()">
+                            <span>👤</span>
+                            <span>My Profile</span>
+                        </div>
+                        <div class="nav-item" onclick="loadMyAttendance()">
+                            <span>🕐</span>
+                            <span>My Attendance</span>
+                        </div>
+                        <div class="nav-item" onclick="loadMyLeave()">
+                            <span>📅</span>
+                            <span>My Leave</span>
+                        </div>
+                        <div class="nav-item" onclick="loadMyPayslips()">
+                            <span>📄</span>
+                            <span>My Payslips</span>
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
+        // Update active nav item
+        function updateActiveNav(clickedElement) {
+            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+            if (clickedElement) {
+                clickedElement.classList.add('active');
+            }
+        }
+
+        // Dashboard - HR Manager Version
+        function loadDashboard() {
+            updateActiveNav(event?.target?.closest('.nav-item'));
+            const contentArea = document.getElementById('contentArea');
+
+            if (currentUser.role === 'hr-manager') {
+                contentArea.innerHTML = `
+                    <div class="page-header">
+                        <h1 class="page-title">Dashboard Overview</h1>
+                        <p class="page-subtitle">Welcome back! Here's your HR summary for today</p>
+                    </div>
+
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon green">👥</div>
+                            <div class="stat-value">${employees.length}</div>
+                            <div class="stat-label">Total Employees</div>
+                            <span class="stat-change positive">↑ 8.2% from last month</span>
+                        </div>
+
+                        <div class="stat-card">
+                            <div class="stat-icon blue">✓</div>
+                            <div class="stat-value">96.4%</div>
+                            <div class="stat-label">Attendance Rate</div>
+                            <span class="stat-change positive">↑ 3.1% from last week</span>
+                        </div>
+
+                        <div class="stat-card">
+                            <div class="stat-icon orange">📋</div>
+                            <div class="stat-value">5</div>
+                            <div class="stat-label">Pending Leave Requests</div>
+                            <span class="stat-change">Requires action</span>
+                        </div>
+
+                        <div class="stat-card">
+                            <div class="stat-icon red">💼</div>
+                            <div class="stat-value">8</div>
+                            <div class="stat-label">Open Positions</div>
+                            <span class="stat-change positive">↑ 2 new this week</span>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">Recent Activities</h2>
+                        </div>
+                        <div>
+                            <div class="employee-list-item">
+                                <div class="employee-avatar-small">EW</div>
+                                <div style="flex: 1;">
+                                    <div style="font-weight: 600;">New employee onboarded</div>
+                                    <div style="font-size: 0.9rem; color: var(--text-secondary);">Emma Wilson joined the Design team</div>
+                                </div>
+                                <div style="text-align: right;">
+                                    <div style="font-size: 0.85rem; color: var(--text-secondary);">2 hours ago</div>
+                                    <span class="badge success">Completed</span>
+                                </div>
+                            </div>
+                            <div class="employee-list-item">
+                                <div class="employee-avatar-small">MC</div>
+                                <div style="flex: 1;">
+                                    <div style="font-weight: 600;">Leave request submitted</div>
+                                    <div style="font-size: 0.9rem; color: var(--text-secondary);">Michael Chen requested 5 days vacation</div>
+                                </div>
+                                <div style="text-align: right;">
+                                    <div style="font-size: 0.85rem; color: var(--text-secondary);">4 hours ago</div>
+                                    <span class="badge warning">Pending</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            } else {
+                // Employee Dashboard
+                contentArea.innerHTML = `
+                    <div class="page-header">
+                        <h1 class="page-title">My Dashboard</h1>
+                        <p class="page-subtitle">Welcome back, ${currentUser.name}!</p>
+                    </div>
+
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon green">✓</div>
+                            <div class="stat-value">98.5%</div>
+                            <div class="stat-label">My Attendance Rate</div>
+                            <span class="stat-change positive">Excellent performance</span>
+                        </div>
+
+                        <div class="stat-card">
+                            <div class="stat-icon blue">🌴</div>
+                            <div class="stat-value">12</div>
+                            <div class="stat-label">Leave Days Available</div>
+                            <span class="stat-change positive">Out of 15 annual days</span>
+                        </div>
+
+                        <div class="stat-card">
+                            <div class="stat-icon orange">📅</div>
+                            <div class="stat-value">0</div>
+                            <div class="stat-label">Pending Requests</div>
+                            <span class="stat-change positive">All clear</span>
+                        </div>
+
+                        <div class="stat-card">
+                            <div class="stat-icon red">📊</div>
+                            <div class="stat-value">March</div>
+                            <div class="stat-label">Next Performance Review</div>
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
+        // Load Employees (Admin Only)
+        function loadEmployees() {
+            if (currentUser.role !== 'hr-manager') return;
+            
+            updateActiveNav(event?.target?.closest('.nav-item'));
+            const contentArea = document.getElementById('contentArea');
+
+            let employeeRows = employees.map(emp => `
+                <div class="employee-list-item">
+                    <div class="employee-avatar-small">${emp.name.split(' ').map(n => n[0]).join('')}</div>
+                    <div style="flex: 1;">
+                        <div style="font-weight: 600;">${emp.name}</div>
+                        <div style="font-size: 0.85rem; color: var(--text-secondary);">${emp.position}</div>
+                    </div>
+                    <div style="min-width: 120px;">${emp.department}</div>
+                    <div style="min-width: 180px; font-size: 0.9rem;">${emp.email}</div>
+                    <span class="badge ${emp.status === 'active' ? 'success' : 'warning'}">${emp.status === 'active' ? 'Active' : 'On Leave'}</span>
+                </div>
+            `).join('');
+
+            contentArea.innerHTML = `
+                <div class="page-header">
+                    <h1 class="page-title">Employee Management</h1>
+                    <p class="page-subtitle">Manage your team members</p>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">All Employees (${employees.length})</h2>
+                        <button class="btn btn-primary">+ Add Employee</button>
+                    </div>
+                    <div>
+                        ${employeeRows}
+                    </div>
+                </div>
+            `;
+        }
+
+        // Employee Views (Self-service)
+        function loadMyProfile() {
+            if (currentUser.role !== 'employee') return;
+            
+            updateActiveNav(event?.target?.closest('.nav-item'));
+            const contentArea = document.getElementById('contentArea');
+
+            contentArea.innerHTML = `
+                <div class="page-header">
+                    <h1 class="page-title">My Profile</h1>
+                    <p class="page-subtitle">View and update your information</p>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">Personal Information</h2>
+                        <button class="btn btn-secondary">Request Update</button>
+                    </div>
+                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 2rem;">
+                        <div>
+                            <div style="margin-bottom: 1.5rem;">
+                                <div style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 0.5rem;">Full Name</div>
+                                <div style="font-weight: 600;">${currentUser.name}</div>
+                            </div>
+                            <div style="margin-bottom: 1.5rem;">
+                                <div style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 0.5rem;">Email</div>
+                                <div style="font-weight: 600;">emma.wilson@company.com</div>
+                            </div>
+                        </div>
+                        <div>
+                            <div style="margin-bottom: 1.5rem;">
+                                <div style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 0.5rem;">Department</div>
+                                <div style="font-weight: 600;">Design</div>
+                            </div>
+                            <div style="margin-bottom: 1.5rem;">
+                                <div style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 0.5rem;">Position</div>
+                                <div style="font-weight: 600;">Senior UI/UX Designer</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function loadMyAttendance() {
+            updateActiveNav(event?.target?.closest('.nav-item'));
+            const contentArea = document.getElementById('contentArea');
+
+            contentArea.innerHTML = `
+                <div class="page-header">
+                    <h1 class="page-title">My Attendance</h1>
+                    <p class="page-subtitle">Track your attendance and work hours</p>
+                </div>
+
+                <div class="card">
+                    <div style="text-align: center; padding: 3rem;">
+                        <div style="font-size: 3rem; font-weight: 700; color: var(--accent); margin-bottom: 0.5rem;">8h 45m</div>
+                        <div style="color: var(--text-secondary);">You are currently checked in • Check-in: 9:00 AM</div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function loadMyLeave() {
+            updateActiveNav(event?.target?.closest('.nav-item'));
+            const contentArea = document.getElementById('contentArea');
+
+            contentArea.innerHTML = `
+                <div class="page-header">
+                    <h1 class="page-title">My Leave</h1>
+                    <p class="page-subtitle">Request and manage your leave</p>
+                </div>
+
+                <div class="stats-grid" style="grid-template-columns: repeat(3, 1fr);">
+                    <div class="stat-card">
+                        <div class="stat-icon green">🌴</div>
+                        <div class="stat-value">12</div>
+                        <div class="stat-label">Annual Leave Available</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon blue">🏥</div>
+                        <div class="stat-value">8</div>
+                        <div class="stat-label">Sick Leave Available</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon orange">📅</div>
+                        <div class="stat-value">3</div>
+                        <div class="stat-label">Personal Days Available</div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function loadMyPayslips() {
+            updateActiveNav(event?.target?.closest('.nav-item'));
+            const contentArea = document.getElementById('contentArea');
+
+            contentArea.innerHTML = `
+                <div class="page-header">
+                    <h1 class="page-title">My Payslips</h1>
+                    <p class="page-subtitle">View and download your payslips</p>
+                </div>
+
+                <div class="card">
+                    <div class="employee-list-item">
+                        <div style="width: 48px; height: 48px; background: rgba(16, 185, 129, 0.1); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: var(--accent); font-size: 1.25rem;">📄</div>
+                        <div style="flex: 1;">
+                            <div style="font-weight: 600;">January 2026 Payslip</div>
+                            <div style="font-size: 0.9rem; color: var(--text-secondary);">Payment Date: Feb 5, 2026</div>
+                        </div>
+                        <div style="text-align: right;">
+                            <div style="font-weight: 700; font-size: 1.25rem; color: var(--accent);">$4,339.67</div>
+                            <button class="btn btn-secondary" style="margin-top: 0.5rem; padding: 0.5rem 1rem; font-size: 0.85rem;">Download</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Placeholder functions for other pages
+        function loadAttendance() {
+            updateActiveNav(event?.target?.closest('.nav-item'));
+            document.getElementById('contentArea').innerHTML = '<div class="page-header"><h1 class="page-title">Attendance Tracking</h1></div><div class="card"><p style="padding: 2rem; text-align: center; color: var(--text-secondary);">Attendance module coming soon</p></div>';
+        }
+
+        function loadLeave() {
+            updateActiveNav(event?.target?.closest('.nav-item'));
+            document.getElementById('contentArea').innerHTML = '<div class="page-header"><h1 class="page-title">Leave Management</h1></div><div class="card"><p style="padding: 2rem; text-align: center; color: var(--text-secondary);">Leave management module coming soon</p></div>';
+        }
+
+        function loadPayroll() {
+            updateActiveNav(event?.target?.closest('.nav-item'));
+            document.getElementById('contentArea').innerHTML = '<div class="page-header"><h1 class="page-title">Payroll Management</h1></div><div class="card"><p style="padding: 2rem; text-align: center; color: var(--text-secondary);">Payroll module coming soon</p></div>';
+        }
+
+        function loadRecruitment() {
+            updateActiveNav(event?.target?.closest('.nav-item'));
+            document.getElementById('contentArea').innerHTML = '<div class="page-header"><h1 class="page-title">Recruitment</h1></div><div class="card"><p style="padding: 2rem; text-align: center; color: var(--text-secondary);">Recruitment module coming soon</p></div>';
+        }
+
+        function loadReports() {
+            updateActiveNav(event?.target?.closest('.nav-item'));
+            document.getElementById('contentArea').innerHTML = '<div class="page-header"><h1 class="page-title">Reports & Analytics</h1></div><div class="card"><p style="padding: 2rem; text-align: center; color: var(--text-secondary);">Reports module coming soon</p></div>';
+        }
+    </script>
+</body>
+</html>
